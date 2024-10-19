@@ -1,0 +1,58 @@
+// Working POST smaples, you can copy these and paste them into the json field of Swagger for POSTs
+{
+  "clusterName": "Cluster-1",
+  "nodeCount": 0,
+  "cpuCores": 108,
+  "memoryGb": 651,
+  "storageTb": 28,
+  "creationDate": "2023-02-03",
+  "environment": "production",
+  "kubernetesVersion": "1.22",
+  "region": "us-west-1",
+  "devices": []
+}
+
+// ALT ArasakaCluster
+{
+  "clusterName": "Cluster-1",
+  "nodeCount": 1,
+  "cpuCores": 108,
+  "memoryGb": 651,
+  "storageTb": 28,
+  "creationDate": "2023-02-03",
+  "environment": "production",
+  "kubernetesVersion": "1.22",
+  "region": "us-west-1",
+  "devices": [
+    {
+      "name": "Device-1",
+      "architecture": "x86_64",
+      "processorType": "Intel Xeon",
+      "region": "us-west-1",
+      "athenaAccessKey": "A1B2C3D4E5F6G7H8"
+    }
+  ]
+}
+
+
+// For a cluster containing a device that has no processes
+{
+  "clusterName": "Cluster-2",
+  "nodeCount": 29,
+  "cpuCores": 108,
+  "memoryGb": 651,
+  "storageTb": 28,
+  "creationDate": "2023-02-03",
+  "environment": "production",
+  "kubernetesVersion": "1.22",
+  "region": "us-west-1",
+  "devices": [
+    {
+      "name": "Device-2",
+      "architecture": "x86_64",
+      "processorType": "Intel Xeon",
+      "region": "us-west-1",
+      "athenaAccessKey": "A1B2C3D4E5F6G7H8"
+    }
+  ]
+}
