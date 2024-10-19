@@ -44,3 +44,4 @@ msbuild.wrn
 Database/mysql
 Database/mysql/*
 pariah-nexus-db.*
+terraform/cyberpunk_pariah-nexus_keypair.pem
