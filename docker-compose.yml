@@ -1,0 +1,40 @@
+version: "3.4"
+
+services:
+  pariahnexus-db:
+    build:
+      context: ./Database
+      dockerfile: Dockerfile
+    # restart: always
+    container_name: pariahnexus-db
+    ports:
+      - 4444:22
+      - 3306:3306
+    environment:
+      - MYSQL_DATABASE=pariahnexus
+      - MYSQL_ROOT_PASSWORD=arasakaOperator123
+      - MYSQL_USER=arasakaOperator
+      - MYSQL_PASSWORD=arasakaOperator123
+    volumes:
+      - ./Database/mysql:/var/lib/mysql
+    healthcheck:
+          test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
+          timeout: 20s
+          retries: 10
+  
+  pariahnexus-db-initialize:
+    build:
+      context: ./Database
+      dockerfile: Dockerfile
+    restart: no
+    depends_on:
+      pariahnexus-db:
+        condition: service_healthy
+    volumes:
+      - ./Database/bin:/usr/lib/mysql/scripts
+    entrypoint: [
+      "bash", "-c", 
+      "
+        mysql -u root --password=arasakaOperator123 -h pariahnexus-db < initialize_database.sql 
+      ",
+    ]
