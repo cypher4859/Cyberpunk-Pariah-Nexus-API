@@ -15,7 +15,7 @@ resource "aws_ecs_cluster" "ecs_cluster" {
 }
 
 resource "aws_ecs_capacity_provider" "ecs_capacity_provider" {
-    name = "ec2_capacity_provider"
+    name = "pariah-nexus_ec2_capacity_provider"
 
     auto_scaling_group_provider {
         auto_scaling_group_arn = var.asg_arn
@@ -53,7 +53,7 @@ resource "aws_ecs_task_definition" "pariah_nexus_ecs_task_definition" {
     container_definitions = jsonencode([
         {
             name      = "pariah-nexus"
-            image     = "docker.io/cypher4859/pariah-nexus:latest" # TODO: Swap this for the actual 
+            image     = "docker.io/cypher4859/pariah-nexus-api:latest" # TODO: Swap this for the actual 
             cpu       = 256
             memory    = 1024
             essential = true
@@ -86,10 +86,10 @@ resource "aws_ecs_task_definition" "pariah_nexus_ecs_task_definition" {
             memory    = 1024
             essential = true
             environment = [
-                {"name": "MYSQL_DATABASE", "value": "cowabunga"},
-                {"name": "MYSQL_ROOT_PASSWORD", "value": "mysqluser123"},
-                {"name": "MYSQL_USER", "value": "raphael"},
-                {"name": "MYSQL_PASSWORD", "value": "raphael123"}
+                {"name": "MYSQL_DATABASE", "value": "pariahnexus"},
+                {"name": "MYSQL_ROOT_PASSWORD", "value": "arasakaOperator123"},
+                {"name": "MYSQL_USER", "value": "arasakaOperator"},
+                {"name": "MYSQL_PASSWORD", "value": "arasakaOperator123"}
             ]
             portMappings = [
                 {

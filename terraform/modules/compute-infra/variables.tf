@@ -17,8 +17,3 @@ variable "launch_template_key_name" {
     type = string
     description = "Key Pair name to use in the Launch Template"
 }
-
-variable "kali_subnet" {
-    type = string
-    description = "Subnet for Kali"
-}

@@ -9,16 +9,16 @@ output "vpc_id" {
 }
 
 output "subnets" {
-    value = [aws_subnet.private_subnet.id, aws_subnet.public_subnet.id]
+    value = [data.aws_subnet.public_subnet.id, aws_subnet.private_subnet.id]
     description = "Subnets inside of the main VPC"
 }
 
 output "public_subnet" {
-    value = aws_subnet.public_subnet.id
+    value = data.aws_subnet.public_subnet.id
     description = "Public Subnet inside of the main VPC"
 }
 
-# output "private_subnet" {
-#     value = aws_subnet.private_subnet.id
-#     description = "Private Subnet inside of the main VPC"
-# }
+output "private_subnet" {
+    value = aws_subnet.private_subnet.id
+    description = "Private Subnet inside of the main VPC"
+}

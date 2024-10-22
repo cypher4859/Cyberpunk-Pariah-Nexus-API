@@ -6,7 +6,7 @@ terraform {
         }
     }
     backend "s3" {
-        bucket = "codeyou-demo-cyberpunk-pariah-nexus-terraform-bucket"
+        bucket = "blackcypher-ops-bucket"
         key    = "terraform/state/code-you/cyberpunk/pariah-nexus/terraform.tfstate"
         region = "us-east-2"
         encrypt = true
@@ -24,6 +24,7 @@ provider "aws" {
 module "pariah_nexus_network_infra" {
     source = "./modules/network-infra"
     vpc_id = "vpc-3771c65c" # Grabbed from the console
+    public_subnet_id = "subnet-03595f11b44edacc8"
 }
 
 module "pariah_nexus_compute_infra" {
@@ -31,6 +32,5 @@ module "pariah_nexus_compute_infra" {
     security_groups = compact(module.pariah_nexus_network_infra.security_groups)
     vpc_id = module.pariah_nexus_network_infra.vpc_id
     subnets = compact(module.pariah_nexus_network_infra.subnets)
-    launch_template_key_name = "cyberpunk_pariah-nexus_keypair"
-    kali_subnet = module.pariah_nexus_network_infra.public_subnet
+    launch_template_key_name = "blackhat_codeyou_demo_keypair" # FIXME: Needs changed later
 }
