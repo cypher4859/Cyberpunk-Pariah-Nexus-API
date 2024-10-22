@@ -1,6 +1,18 @@
 version: "3.4"
 
 services:
+  pariahnexus-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: app
+    ports:
+      - 8080:8080
+    depends_on:
+      pariahnexus-db:
+        condition: service_healthy
+        restart: true
+
   pariahnexus-db:
     build:
       context: ./Database
@@ -38,3 +50,7 @@ services:
         mysql -u root --password=arasakaOperator123 -h pariahnexus-db < initialize_database.sql 
       ",
     ]
+
+networks:
+  default:
+    driver: bridge
