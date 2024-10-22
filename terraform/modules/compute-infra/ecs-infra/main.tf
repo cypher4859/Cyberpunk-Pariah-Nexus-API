@@ -98,6 +98,14 @@ resource "aws_ecs_task_definition" "pariah_nexus_ecs_task_definition" {
                     protocol      = "tcp"
                 }
             ],
+            logConfiguration = {
+                logDriver = "awslogs",
+                options   = {
+                    awslogs-group         = aws_cloudwatch_log_group.logs.name
+                    awslogs-region        = local.region
+                    awslogs-stream-prefix = "ecs-pariah-nexus-db"
+                }
+            }
         },
         {
             name      = "pariah-nexus-db-initialize"
@@ -106,14 +114,22 @@ resource "aws_ecs_task_definition" "pariah_nexus_ecs_task_definition" {
             memory    = 1024
             essential = false
             entryPoint = [
-                "bash", "-c", "mysql -u root --password=arasakaOperator123 -h pariahnexus-db < initialize_database.sql",
+                "bash", "-c", "mysql -u root --password=arasakaOperator123 -h pariah-nexus-db < initialize_database.sql",
             ],
             dependsOn = [
                 {
                     containerName   = "pariah-nexus-db",
                     condition       = "START"
                 }
-            ]
+            ],
+            logConfiguration = {
+                logDriver = "awslogs",
+                options   = {
+                    awslogs-group         = aws_cloudwatch_log_group.logs.name
+                    awslogs-region        = local.region
+                    awslogs-stream-prefix = "ecs-pariah-nexus-db-initialize"
+                }
+            }
         }
     ])
 }

@@ -30,6 +30,6 @@ resource "aws_lb_target_group" "ecs_tg" {
 
     # NOTE: Pretty sure the healthcheck was causing it to fail
     health_check {
-      path = "/"
+      path = "/swagger/index.html"
     }
 }
