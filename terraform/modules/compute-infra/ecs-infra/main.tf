@@ -45,7 +45,7 @@ resource "aws_ecs_task_definition" "pariah_nexus_ecs_task_definition" {
     family             = "pariah-nexus-ecs-task" # TODO: Swap this
     network_mode       = "awsvpc"
     execution_role_arn = "arn:aws:iam::${local.acct_id}:role/ecsTaskExecutionRole"
-    cpu                = 768
+    cpu                = 512
     runtime_platform {
         operating_system_family = "LINUX"
         cpu_architecture        = "X86_64"
@@ -53,7 +53,8 @@ resource "aws_ecs_task_definition" "pariah_nexus_ecs_task_definition" {
     container_definitions = jsonencode([
         {
             name      = "pariah-nexus"
-            image     = "docker.io/cypher4859/pariah-nexus-api:latest" # TODO: Swap this for the actual 
+            image     = "docker.io/cypher4859/pariah-nexus-api:latest" # TODO: Swap this for the actual
+            container_name = "pariah-nexus-app"
             cpu       = 256
             memory    = 1024
             essential = true
@@ -66,8 +67,8 @@ resource "aws_ecs_task_definition" "pariah_nexus_ecs_task_definition" {
             ],
             dependsOn = [
                 {
-                    containerName   = "pariah-nexus-db-initialize",
-                    condition       = "COMPLETE"
+                    containerName   = "pariah-nexus-db",
+                    condition       = "HEALTHY"
                 }
             ],
             logConfiguration = {
@@ -77,11 +78,22 @@ resource "aws_ecs_task_definition" "pariah_nexus_ecs_task_definition" {
                     awslogs-region        = local.region
                     awslogs-stream-prefix = "ecs-pariah-nexus"
                 }
+            },
+            "healthCheck": {
+                "command": [
+                    "CMD-SHELL",
+                    "curl -f http://localhost:8080/swagger/index.html || exit 1"
+                ],
+                "interval": 30,
+                "timeout": 5,
+                "retries": 3,
+                "startPeriod": 60
             }
         },
         {
             name      = "pariah-nexus-db"
             image     = "docker.io/cypher4859/pariah-nexus-db:latest" # TODO: Swap this for the actual 
+            container_name = "pariah-nexus-db"
             cpu       = 256
             memory    = 1024
             essential = true
@@ -98,36 +110,22 @@ resource "aws_ecs_task_definition" "pariah_nexus_ecs_task_definition" {
                     protocol      = "tcp"
                 }
             ],
+            healthCheck = {
+                "command": [
+                    "CMD-SHELL",
+                    "mysqladmin ping -h localhost -u root --password=arasakaOperator123 || exit 1"
+                ],
+                "interval": 30,
+                "timeout": 5,
+                "retries": 3,
+                "startPeriod": 30
+            }
             logConfiguration = {
                 logDriver = "awslogs",
                 options   = {
                     awslogs-group         = aws_cloudwatch_log_group.logs.name
                     awslogs-region        = local.region
                     awslogs-stream-prefix = "ecs-pariah-nexus-db"
-                }
-            }
-        },
-        {
-            name      = "pariah-nexus-db-initialize"
-            image     = "docker.io/cypher4859/pariah-nexus-db:latest" # TODO: Swap this for the actual 
-            cpu       = 256
-            memory    = 1024
-            essential = false
-            entryPoint = [
-                "bash", "-c", "mysql -u root --password=arasakaOperator123 -h pariah-nexus-db < initialize_database.sql",
-            ],
-            dependsOn = [
-                {
-                    containerName   = "pariah-nexus-db",
-                    condition       = "START"
-                }
-            ],
-            logConfiguration = {
-                logDriver = "awslogs",
-                options   = {
-                    awslogs-group         = aws_cloudwatch_log_group.logs.name
-                    awslogs-region        = local.region
-                    awslogs-stream-prefix = "ecs-pariah-nexus-db-initialize"
                 }
             }
         }
