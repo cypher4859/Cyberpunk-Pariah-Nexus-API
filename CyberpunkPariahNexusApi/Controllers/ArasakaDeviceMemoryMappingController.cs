@@ -44,61 +44,61 @@ namespace CyberpunkPariahNexusApi.Controllers
 
         // PUT: api/ArasakaDeviceMemoryMapping/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutArasakaDeviceMemoryMapping(int id, ArasakaDeviceMemoryMapping arasakaDeviceMemoryMapping)
-        {
-            if (id != arasakaDeviceMemoryMapping.id)
-            {
-                return BadRequest();
-            }
+        // [HttpPut("{id}")]
+        // public async Task<IActionResult> PutArasakaDeviceMemoryMapping(int id, ArasakaDeviceMemoryMapping arasakaDeviceMemoryMapping)
+        // {
+        //     if (id != arasakaDeviceMemoryMapping.id)
+        //     {
+        //         return BadRequest();
+        //     }
 
-            _context.Entry(arasakaDeviceMemoryMapping).State = EntityState.Modified;
+        //     _context.Entry(arasakaDeviceMemoryMapping).State = EntityState.Modified;
 
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!ArasakaDeviceMemoryMappingExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+        //     try
+        //     {
+        //         await _context.SaveChangesAsync();
+        //     }
+        //     catch (DbUpdateConcurrencyException)
+        //     {
+        //         if (!ArasakaDeviceMemoryMappingExists(id))
+        //         {
+        //             return NotFound();
+        //         }
+        //         else
+        //         {
+        //             throw;
+        //         }
+        //     }
 
-            return NoContent();
-        }
+        //     return NoContent();
+        // }
 
-        // POST: api/ArasakaDeviceMemoryMapping
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost]
-        public async Task<ActionResult<ArasakaDeviceMemoryMapping>> PostArasakaDeviceMemoryMapping(ArasakaDeviceMemoryMapping arasakaDeviceMemoryMapping)
-        {
-            _context.arasakaDevicesMemoryMappings.Add(arasakaDeviceMemoryMapping);
-            await _context.SaveChangesAsync();
+        // // POST: api/ArasakaDeviceMemoryMapping
+        // // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        // [HttpPost]
+        // public async Task<ActionResult<ArasakaDeviceMemoryMapping>> PostArasakaDeviceMemoryMapping(ArasakaDeviceMemoryMapping arasakaDeviceMemoryMapping)
+        // {
+        //     _context.arasakaDevicesMemoryMappings.Add(arasakaDeviceMemoryMapping);
+        //     await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetArasakaDeviceMemoryMapping", new { id = arasakaDeviceMemoryMapping.id }, arasakaDeviceMemoryMapping);
-        }
+        //     return CreatedAtAction("GetArasakaDeviceMemoryMapping", new { id = arasakaDeviceMemoryMapping.id }, arasakaDeviceMemoryMapping);
+        // }
 
-        // DELETE: api/ArasakaDeviceMemoryMapping/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteArasakaDeviceMemoryMapping(int id)
-        {
-            var arasakaDeviceMemoryMapping = await _context.arasakaDevicesMemoryMappings.FindAsync(id);
-            if (arasakaDeviceMemoryMapping == null)
-            {
-                return NotFound();
-            }
+        // // DELETE: api/ArasakaDeviceMemoryMapping/5
+        // [HttpDelete("{id}")]
+        // public async Task<IActionResult> DeleteArasakaDeviceMemoryMapping(int id)
+        // {
+        //     var arasakaDeviceMemoryMapping = await _context.arasakaDevicesMemoryMappings.FindAsync(id);
+        //     if (arasakaDeviceMemoryMapping == null)
+        //     {
+        //         return NotFound();
+        //     }
 
-            _context.arasakaDevicesMemoryMappings.Remove(arasakaDeviceMemoryMapping);
-            await _context.SaveChangesAsync();
+        //     _context.arasakaDevicesMemoryMappings.Remove(arasakaDeviceMemoryMapping);
+        //     await _context.SaveChangesAsync();
 
-            return NoContent();
-        }
+        //     return NoContent();
+        // }
 
         private bool ArasakaDeviceMemoryMappingExists(int id)
         {

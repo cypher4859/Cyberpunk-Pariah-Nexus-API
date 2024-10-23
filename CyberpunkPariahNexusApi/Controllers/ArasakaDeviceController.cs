@@ -48,61 +48,61 @@ namespace CyberpunkPariahNexusApi.Controllers
 
         // PUT: api/ArasakaDevice/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutArasakaDevice(int id, ArasakaDevice arasakaDevice)
-        {
-            if (id != arasakaDevice.id)
-            {
-                return BadRequest();
-            }
+        // [HttpPut("{id}")]
+        // public async Task<IActionResult> PutArasakaDevice(int id, ArasakaDevice arasakaDevice)
+        // {
+        //     if (id != arasakaDevice.id)
+        //     {
+        //         return BadRequest();
+        //     }
 
-            _context.Entry(arasakaDevice).State = EntityState.Modified;
+        //     _context.Entry(arasakaDevice).State = EntityState.Modified;
 
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!ArasakaDeviceExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+        //     try
+        //     {
+        //         await _context.SaveChangesAsync();
+        //     }
+        //     catch (DbUpdateConcurrencyException)
+        //     {
+        //         if (!ArasakaDeviceExists(id))
+        //         {
+        //             return NotFound();
+        //         }
+        //         else
+        //         {
+        //             throw;
+        //         }
+        //     }
 
-            return NoContent();
-        }
+        //     return NoContent();
+        // }
 
-        // POST: api/ArasakaDevice
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost]
-        public async Task<ActionResult<ArasakaDevice>> PostArasakaDevice(ArasakaDevice arasakaDevice)
-        {
-            _context.arasakaDevices.Add(arasakaDevice);
-            await _context.SaveChangesAsync();
+        // // POST: api/ArasakaDevice
+        // // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        // [HttpPost]
+        // public async Task<ActionResult<ArasakaDevice>> PostArasakaDevice(ArasakaDevice arasakaDevice)
+        // {
+        //     _context.arasakaDevices.Add(arasakaDevice);
+        //     await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetArasakaDevice", new { id = arasakaDevice.id }, arasakaDevice);
-        }
+        //     return CreatedAtAction("GetArasakaDevice", new { id = arasakaDevice.id }, arasakaDevice);
+        // }
 
-        // DELETE: api/ArasakaDevice/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteArasakaDevice(int id)
-        {
-            var arasakaDevice = await _context.arasakaDevices.FindAsync(id);
-            if (arasakaDevice == null)
-            {
-                return NotFound();
-            }
+        // // DELETE: api/ArasakaDevice/5
+        // [HttpDelete("{id}")]
+        // public async Task<IActionResult> DeleteArasakaDevice(int id)
+        // {
+        //     var arasakaDevice = await _context.arasakaDevices.FindAsync(id);
+        //     if (arasakaDevice == null)
+        //     {
+        //         return NotFound();
+        //     }
 
-            _context.arasakaDevices.Remove(arasakaDevice);
-            await _context.SaveChangesAsync();
+        //     _context.arasakaDevices.Remove(arasakaDevice);
+        //     await _context.SaveChangesAsync();
 
-            return NoContent();
-        }
+        //     return NoContent();
+        // }
 
         private bool ArasakaDeviceExists(int id)
         {

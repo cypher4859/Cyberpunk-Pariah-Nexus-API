@@ -44,61 +44,61 @@ namespace CyberpunkPariahNexusApi.Controllers
 
         // PUT: api/ArasakaAthenaDataEvent/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutArasakaAthenaDataEvent(int id, ArasakaAthenaDataEvent arasakaAthenaDataEvent)
-        {
-            if (id != arasakaAthenaDataEvent.id)
-            {
-                return BadRequest();
-            }
+        // [HttpPut("{id}")]
+        // public async Task<IActionResult> PutArasakaAthenaDataEvent(int id, ArasakaAthenaDataEvent arasakaAthenaDataEvent)
+        // {
+        //     if (id != arasakaAthenaDataEvent.id)
+        //     {
+        //         return BadRequest();
+        //     }
 
-            _context.Entry(arasakaAthenaDataEvent).State = EntityState.Modified;
+        //     _context.Entry(arasakaAthenaDataEvent).State = EntityState.Modified;
 
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!ArasakaAthenaDataEventExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+        //     try
+        //     {
+        //         await _context.SaveChangesAsync();
+        //     }
+        //     catch (DbUpdateConcurrencyException)
+        //     {
+        //         if (!ArasakaAthenaDataEventExists(id))
+        //         {
+        //             return NotFound();
+        //         }
+        //         else
+        //         {
+        //             throw;
+        //         }
+        //     }
 
-            return NoContent();
-        }
+        //     return NoContent();
+        // }
 
-        // POST: api/ArasakaAthenaDataEvent
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost]
-        public async Task<ActionResult<ArasakaAthenaDataEvent>> PostArasakaAthenaDataEvent(ArasakaAthenaDataEvent arasakaAthenaDataEvent)
-        {
-            _context.arasakaDataEvents.Add(arasakaAthenaDataEvent);
-            await _context.SaveChangesAsync();
+        // // POST: api/ArasakaAthenaDataEvent
+        // // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        // [HttpPost]
+        // public async Task<ActionResult<ArasakaAthenaDataEvent>> PostArasakaAthenaDataEvent(ArasakaAthenaDataEvent arasakaAthenaDataEvent)
+        // {
+        //     _context.arasakaDataEvents.Add(arasakaAthenaDataEvent);
+        //     await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetArasakaAthenaDataEvent", new { id = arasakaAthenaDataEvent.id }, arasakaAthenaDataEvent);
-        }
+        //     return CreatedAtAction("GetArasakaAthenaDataEvent", new { id = arasakaAthenaDataEvent.id }, arasakaAthenaDataEvent);
+        // }
 
-        // DELETE: api/ArasakaAthenaDataEvent/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteArasakaAthenaDataEvent(int id)
-        {
-            var arasakaAthenaDataEvent = await _context.arasakaDataEvents.FindAsync(id);
-            if (arasakaAthenaDataEvent == null)
-            {
-                return NotFound();
-            }
+        // // DELETE: api/ArasakaAthenaDataEvent/5
+        // [HttpDelete("{id}")]
+        // public async Task<IActionResult> DeleteArasakaAthenaDataEvent(int id)
+        // {
+        //     var arasakaAthenaDataEvent = await _context.arasakaDataEvents.FindAsync(id);
+        //     if (arasakaAthenaDataEvent == null)
+        //     {
+        //         return NotFound();
+        //     }
 
-            _context.arasakaDataEvents.Remove(arasakaAthenaDataEvent);
-            await _context.SaveChangesAsync();
+        //     _context.arasakaDataEvents.Remove(arasakaAthenaDataEvent);
+        //     await _context.SaveChangesAsync();
 
-            return NoContent();
-        }
+        //     return NoContent();
+        // }
 
         private bool ArasakaAthenaDataEventExists(int id)
         {

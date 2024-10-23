@@ -44,61 +44,61 @@ namespace CyberpunkPariahNexusApi.Controllers
 
         // PUT: api/ArasakaDeviceProcess/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutArasakaDeviceProcess(int id, ArasakaDeviceProcess arasakaDeviceProcess)
-        {
-            if (id != arasakaDeviceProcess.id)
-            {
-                return BadRequest();
-            }
+        // [HttpPut("{id}")]
+        // public async Task<IActionResult> PutArasakaDeviceProcess(int id, ArasakaDeviceProcess arasakaDeviceProcess)
+        // {
+        //     if (id != arasakaDeviceProcess.id)
+        //     {
+        //         return BadRequest();
+        //     }
 
-            _context.Entry(arasakaDeviceProcess).State = EntityState.Modified;
+        //     _context.Entry(arasakaDeviceProcess).State = EntityState.Modified;
 
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!ArasakaDeviceProcessExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+        //     try
+        //     {
+        //         await _context.SaveChangesAsync();
+        //     }
+        //     catch (DbUpdateConcurrencyException)
+        //     {
+        //         if (!ArasakaDeviceProcessExists(id))
+        //         {
+        //             return NotFound();
+        //         }
+        //         else
+        //         {
+        //             throw;
+        //         }
+        //     }
 
-            return NoContent();
-        }
+        //     return NoContent();
+        // }
 
-        // POST: api/ArasakaDeviceProcess
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost]
-        public async Task<ActionResult<ArasakaDeviceProcess>> PostArasakaDeviceProcess(ArasakaDeviceProcess arasakaDeviceProcess)
-        {
-            _context.arasakaDeviceProcesses.Add(arasakaDeviceProcess);
-            await _context.SaveChangesAsync();
+        // // POST: api/ArasakaDeviceProcess
+        // // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        // [HttpPost]
+        // public async Task<ActionResult<ArasakaDeviceProcess>> PostArasakaDeviceProcess(ArasakaDeviceProcess arasakaDeviceProcess)
+        // {
+        //     _context.arasakaDeviceProcesses.Add(arasakaDeviceProcess);
+        //     await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetArasakaDeviceProcess", new { id = arasakaDeviceProcess.id }, arasakaDeviceProcess);
-        }
+        //     return CreatedAtAction("GetArasakaDeviceProcess", new { id = arasakaDeviceProcess.id }, arasakaDeviceProcess);
+        // }
 
-        // DELETE: api/ArasakaDeviceProcess/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteArasakaDeviceProcess(int id)
-        {
-            var arasakaDeviceProcess = await _context.arasakaDeviceProcesses.FindAsync(id);
-            if (arasakaDeviceProcess == null)
-            {
-                return NotFound();
-            }
+        // // DELETE: api/ArasakaDeviceProcess/5
+        // [HttpDelete("{id}")]
+        // public async Task<IActionResult> DeleteArasakaDeviceProcess(int id)
+        // {
+        //     var arasakaDeviceProcess = await _context.arasakaDeviceProcesses.FindAsync(id);
+        //     if (arasakaDeviceProcess == null)
+        //     {
+        //         return NotFound();
+        //     }
 
-            _context.arasakaDeviceProcesses.Remove(arasakaDeviceProcess);
-            await _context.SaveChangesAsync();
+        //     _context.arasakaDeviceProcesses.Remove(arasakaDeviceProcess);
+        //     await _context.SaveChangesAsync();
 
-            return NoContent();
-        }
+        //     return NoContent();
+        // }
 
         private bool ArasakaDeviceProcessExists(int id)
         {
