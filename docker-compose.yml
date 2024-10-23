@@ -27,8 +27,6 @@ services:
       - MYSQL_ROOT_PASSWORD=arasakaOperator123
       - MYSQL_USER=arasakaOperator
       - MYSQL_PASSWORD=arasakaOperator123
-    volumes:
-      - ./Database/mysql:/var/lib/mysql
     healthcheck:
           test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
           timeout: 20s

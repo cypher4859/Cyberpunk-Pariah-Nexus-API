@@ -15,7 +15,7 @@ RUN dotnet publish --no-restore -o /app
 FROM mcr.microsoft.com/dotnet/aspnet:8.0
 WORKDIR /app
 COPY --from=publish /app .
-RUN apt update && apt install -y curl default-mysql-client ncat
+RUN apt update && apt install -y curl
 
 
 ENTRYPOINT [ ]
