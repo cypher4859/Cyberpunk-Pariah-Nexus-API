@@ -8,7 +8,7 @@ ENV TARGET_S3_BUCKET_NAME=$TARGET_S3_BUCKET_NAME
 
 WORKDIR /docker-entrypoint-initdb.d
 RUN aws s3 cp s3://${TARGET_S3_BUCKET_NAME}/projects/cyberpunk/pariah-nexus-api/initialization_data/initialize_database.sql ./initialize_database.sql
-COPY ./bin/mysql.conf /etc/mysql/conf.d/mysql.cnf
+RUN aws s3 cp s3://${TARGET_S3_BUCKET_NAME}/projects/cyberpunk/pariah-nexus-api/initialization_data/mysql.cnf /etc/mysql/conf.d/mysql.cnf
 
 RUN microdnf install nc
 
