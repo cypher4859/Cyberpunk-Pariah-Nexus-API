@@ -12,8 +12,17 @@ jobs:
   build-deploy:
     name: Build and Deploy Code
     runs-on: ubuntu-latest
+    permissions:
+      id-token: write  # Required to exchange the GitHub token for AWS credentials
+      contents: read   # Standard permission to read the repository
 
     steps:
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          role-to-assume: ${{ secrets.GITHUB_PARIAH_NEXUS_ROLE_ARN }}
+          aws-region: ${{ secrets.AWS_DEFAULT_REGION }}
+
       - name: Log in to DockerHub
         run: echo "${{ secrets.DOCKERHUB_PASSWORD }}" | docker login -u "${{ secrets.DOCKERHUB_USERNAME }}" --password-stdin
 
@@ -21,7 +30,12 @@ jobs:
         run: docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/pariah-nexus-api:latest -f ./Dockerfile .
 
       - name: Build DB Docker image
-        run: docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/pariah-nexus-db:latest -f ./Database/Dockerfile .
+        run: docker build \
+              --build-arg AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }} \
+              --build-arg AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }} \
+              --build-arg AWS_DEFAULT_REGION=${{ secrets.AWS_DEFAULT_REGION }} \
+              --build-arg TARGET_S3_BUCKET_NAME=${{ secrets.TARGET_S3_BUCKET_NAME }} \
+              -t ${{ secrets.DOCKERHUB_USERNAME }}/pariah-nexus-db:latest -f ./Database/Dockerfile .
 
       - name: Push API Docker image to DockerHub
         run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/pariah-nexus-api:latest
@@ -39,6 +53,12 @@ jobs:
       # Step 1: Checkout the repository
       - name: Checkout repository
         uses: actions/checkout@v2
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          role-to-assume: ${{ secrets.TERRAFORM_PARIAH_NEXUS_ROLE_ARN }}
+          aws-region: ${{ secrets.AWS_DEFAULT_REGION }}
 
       # Step 2: Setup Terraform CLI
       - name: Setup Terraform
@@ -73,6 +93,12 @@ jobs:
       # Step 1: Checkout the repository
       - name: Checkout repository
         uses: actions/checkout@v2
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          role-to-assume: ${{ secrets.TERRAFORM_PARIAH_NEXUS_ROLE_ARN }}
+          aws-region: ${{ secrets.AWS_DEFAULT_REGION }}
 
       # Step 2: Setup Terraform CLI
       - name: Setup Terraform

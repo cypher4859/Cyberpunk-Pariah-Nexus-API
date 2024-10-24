@@ -1,7 +1,19 @@
 FROM mysql:latest
 
+# Set up environment variables for AWS, these can be replaced with build secrets
+ARG AWS_ACCESS_KEY_ID
+ARG AWS_SECRET_ACCESS_KEY
+ARG AWS_DEFAULT_REGION
+ARG TARGET_S3_BUCKET_NAME
+
+# Optionally expose these as environment variables for the build process
+ENV AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID
+ENV AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY
+ENV AWS_DEFAULT_REGION=$AWS_DEFAULT_REGION
+ENV TARGET_S3_BUCKET_NAME=$TARGET_S3_BUCKET_NAME
+
 WORKDIR /docker-entrypoint-initdb.d
-COPY ./bin/initialize_database.sql .
+RUN aws s3 cp s3://${TARGET_S3_BUCKET_NAME}/projects/cyberpunk/pariah-nexus-api/initialization_data/initialize_database.sql ./initialize_database.sql
 COPY ./bin/mysql.conf /etc/mysql/conf.d/mysql.cnf
 
 RUN microdnf install nc
