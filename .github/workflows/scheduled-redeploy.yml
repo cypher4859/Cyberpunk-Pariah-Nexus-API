@@ -1,4 +1,4 @@
-name: Build and Deploy to ECS Service for Pariah-Nexus
+name: (Midnight) Scheduled redeploy for Pariah-Nexus
 
 on:
   schedule:

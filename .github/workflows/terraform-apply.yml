@@ -1,4 +1,4 @@
-name: Terraform Plan and Apply
+name: On Push, Build and Terraform Apply
 
 on:
   push:
