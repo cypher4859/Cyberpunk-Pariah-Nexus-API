@@ -15,6 +15,11 @@ services:
 
   pariah-nexus-db:
     build:
+      args:
+        - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
+        - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+        - AWS_DEFAULT_REGION=${AWS_DEFAULT_REGION}
+        - TARGET_S3_BUCKET_NAME=blackcypher-ops-bucket
       context: ./Database
       dockerfile: Dockerfile
     # restart: always
