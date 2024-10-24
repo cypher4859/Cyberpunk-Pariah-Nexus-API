@@ -1,0 +1,47 @@
+name: Build and Deploy to ECS Service for Pariah-Nexus
+
+on:
+  schedule:
+    # This cron expression runs the workflow every day at 00:00 UTC
+    - cron: '0 4 * * *'
+
+env:
+  AWS_REGION: us-east-2
+  SERVICE_NAME: pariah-nexus-service
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Log in to DockerHub
+      run: echo "${{ secrets.DOCKERHUB_PASSWORD }}" | docker login -u "${{ secrets.DOCKERHUB_USERNAME }}" --password-stdin
+
+    - name: Build API Docker image
+      run: docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/pariah-nexus-api:latest -f ./Dockerfile .
+
+    - name: Build DB Docker image
+      run: docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/pariah-nexus-db:latest -f ./Database/Dockerfile .
+
+    - name: Push API Docker image to DockerHub
+      run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/pariah-nexus-api:latest
+
+    - name: Push DB Docker image to DockerHub
+      run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/pariah-nexus-db:latest
+
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: ${{ env.AWS_REGION }}
+
+    - name: Force new deployment on ECS for API
+      run: |
+        aws ecs update-service \
+          --cluster ${{ secrets.ECS_CLUSTER_ARN }} \
+          --service ${{ env.SERVICE_NAME }} \
+          --force-new-deployment
