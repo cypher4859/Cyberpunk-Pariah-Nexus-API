@@ -6,7 +6,6 @@ on:
     - cron: '0 4 * * *'
 
 env:
-  AWS_REGION: us-east-2
   SERVICE_NAME: pariah-nexus-service
 
 jobs:
@@ -20,7 +19,7 @@ jobs:
     - name: Configure AWS credentials
       uses: aws-actions/configure-aws-credentials@v1
       with:
-        role-to-assume: ${{ secrets.GITHUB_PARIAH_NEXUS_ROLE_ARN }}
+        role-to-assume: ${{ secrets.S3_PARIAH_NEXUS_ROLE_ARN }}
         aws-region: ${{ secrets.AWS_DEFAULT_REGION }} 
 
     - name: Log in to DockerHub
