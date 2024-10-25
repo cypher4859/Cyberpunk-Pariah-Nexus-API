@@ -51,6 +51,9 @@ jobs:
   terraform-plan:
     name: Terraform Plan
     runs-on: ubuntu-latest
+    permissions:
+      id-token: write  # Required to exchange the GitHub token for AWS credentials
+      contents: read   # Standard permission to read the repository
     needs: build-deploy
     if: success()
 
@@ -91,6 +94,9 @@ jobs:
   terraform-apply:
     name: Terraform Apply
     runs-on: ubuntu-latest
+    permissions:
+      id-token: write  # Required to exchange the GitHub token for AWS credentials
+      contents: read   # Standard permission to read the repository
     needs: terraform-plan  # Only run this job if 'terraform-plan' completes successfully
     if: success()  # Only proceed if the previous job succeeded
 
