@@ -30,8 +30,7 @@ jobs:
 
       - name: Download SQL and config from S3
         run: |
-          mkdir -p ./Database
-          aws s3 cp s3://${{ secrets.TARGET_S3_BUCKET_NAME }}/projects/cyberpunk/pariah-nexus-api/initialization_data/initialize_database.sql ./Database/initialize_database.sql
+          aws s3 cp s3://${{ secrets.TARGET_S3_BUCKET_NAME }}/projects/cyberpunk/pariah-nexus-api/initialization_data/initialize_database.sql initialize_database.sql
 
       - name: Build DB Docker image
         run: |

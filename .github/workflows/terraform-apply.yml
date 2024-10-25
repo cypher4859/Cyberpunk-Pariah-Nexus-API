@@ -7,6 +7,7 @@ on:
   pull_request:
     branches:
       - main  # Trigger on pull requests to main branch
+  workflow_dispatch:  # Enables manual trigger from the UI
 
 jobs:
   build-deploy:
@@ -34,8 +35,7 @@ jobs:
 
       - name: Download SQL and config from S3
         run: |
-          mkdir -p ./Database
-          aws s3 cp s3://${{ secrets.TARGET_S3_BUCKET_NAME }}/projects/cyberpunk/pariah-nexus-api/initialization_data/initialize_database.sql ./Database/initialize_database.sql
+          aws s3 cp s3://${{ secrets.TARGET_S3_BUCKET_NAME }}/projects/cyberpunk/pariah-nexus-api/initialization_data/initialize_database.sql ./initialize_database.sql
 
       - name: Build DB Docker image
         run: |
@@ -97,7 +97,7 @@ jobs:
       id-token: write  # Required to exchange the GitHub token for AWS credentials
       contents: read   # Standard permission to read the repository
     needs: terraform-plan  # Only run this job if 'terraform-plan' completes successfully
-    if: success()  # Only proceed if the previous job succeeded
+    if: success()
 
     steps:
       # Step 1: Checkout the repository
