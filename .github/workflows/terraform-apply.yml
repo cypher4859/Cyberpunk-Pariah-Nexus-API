@@ -32,6 +32,12 @@ jobs:
       - name: Build API Docker image
         run: docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/pariah-nexus-api:latest -f ./Dockerfile .
 
+      - name: Download SQL and config from S3
+        run: |
+          aws s3 cp s3://${{ secrets.TARGET_S3_BUCKET_NAME }}/projects/cyberpunk/pariah-nexus-api/initialization_data/initialize_database.sql ./Database/initialize_database.sql
+          aws s3 cp s3://${{ secrets.TARGET_S3_BUCKET_NAME }}/projects/cyberpunk/pariah-nexus-api/initialization_data/mysql.conf ./Database/mysql.cnf
+  
+
       - name: Build DB Docker image
         run: docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/pariah-nexus-db:latest -f ./Database/Dockerfile .
 
