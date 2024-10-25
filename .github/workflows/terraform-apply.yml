@@ -39,6 +39,7 @@ jobs:
 
       - name: Build DB Docker image
         run: |
+          ls -l
           docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/pariah-nexus-db:latest -f ./Database/Dockerfile .
 
       - name: Push API Docker image to DockerHub
