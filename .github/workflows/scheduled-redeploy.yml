@@ -4,6 +4,7 @@ on:
   schedule:
     # This cron expression runs the workflow every day at 00:00 UTC
     - cron: '0 4 * * *'
+  workflow_dispatch:  # Enables manual trigger from the UI
 
 env:
   SERVICE_NAME: pariah-nexus-service
