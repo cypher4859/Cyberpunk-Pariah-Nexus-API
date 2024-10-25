@@ -4,7 +4,6 @@ WORKDIR /docker-entrypoint-initdb.d
 
 # Copy the downloaded files into the image
 COPY ./initialize_database.sql ./initialize_database.sql
-COPY ./mysql.cnf /etc/mysql/conf.d/mysql.cnf
 
 # Install netcat for port checking
 RUN microdnf install -y nc
