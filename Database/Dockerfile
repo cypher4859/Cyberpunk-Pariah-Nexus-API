@@ -1,16 +1,13 @@
 FROM mysql:latest
 
 # Set up environment variables for AWS, these can be replaced with build secrets
-ARG AWS_ACCESS_KEY_ID
-ARG AWS_SECRET_ACCESS_KEY
-ARG AWS_DEFAULT_REGION
-ARG TARGET_S3_BUCKET_NAME
+
 
 # Optionally expose these as environment variables for the build process
 ENV AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID
 ENV AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY
 ENV AWS_DEFAULT_REGION=$AWS_DEFAULT_REGION
-ENV TARGET_S3_BUCKET_NAME=$TARGET_S3_BUCKET_NAME
+ENV TARGET_S3_BUCKET_NAME=blackcypher-ops-bucket
 # Install the necessary tools (curl, unzip) and install AWS CLI using microdnf
 RUN microdnf install -y curl unzip nc && \
     curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip" && \
