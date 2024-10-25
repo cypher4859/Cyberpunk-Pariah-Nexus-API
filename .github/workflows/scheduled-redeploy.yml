@@ -13,39 +13,39 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v2
+      - name: Checkout repository
+        uses: actions/checkout@v2
 
-    - name: Configure AWS credentials
-      uses: aws-actions/configure-aws-credentials@v1
-      with:
-        role-to-assume: ${{ secrets.S3_PARIAH_NEXUS_ROLE_ARN }}
-        aws-region: ${{ secrets.AWS_DEFAULT_REGION }} 
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          role-to-assume: ${{ secrets.S3_PARIAH_NEXUS_ROLE_ARN }}
+          aws-region: ${{ secrets.AWS_DEFAULT_REGION }}
 
-    - name: Log in to DockerHub
-      run: echo "${{ secrets.DOCKERHUB_PASSWORD }}" | docker login -u "${{ secrets.DOCKERHUB_USERNAME }}" --password-stdin
+      - name: Log in to DockerHub
+        run: echo "${{ secrets.DOCKERHUB_PASSWORD }}" | docker login -u "${{ secrets.DOCKERHUB_USERNAME }}" --password-stdin
 
-    - name: Build API Docker image
-      run: docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/pariah-nexus-api:latest -f ./Dockerfile .
+      - name: Build API Docker image
+        run: docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/pariah-nexus-api:latest -f ./Dockerfile .
 
-    - name: Build DB Docker image
-      run: docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/pariah-nexus-db:latest -f ./Database/Dockerfile .
+      - name: Download SQL and config from S3
+        run: |
+          mkdir -p ./Database
+          aws s3 cp s3://${{ secrets.TARGET_S3_BUCKET_NAME }}/projects/cyberpunk/pariah-nexus-api/initialization_data/initialize_database.sql ./Database/initialize_database.sql
 
-    - name: Push API Docker image to DockerHub
-      run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/pariah-nexus-api:latest
+      - name: Build DB Docker image
+        run: |
+          docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/pariah-nexus-db:latest -f ./Database/Dockerfile .
 
-    - name: Push DB Docker image to DockerHub
-      run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/pariah-nexus-db:latest
+      - name: Push API Docker image to DockerHub
+        run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/pariah-nexus-api:latest
 
-    - name: Configure AWS credentials
-      uses: aws-actions/configure-aws-credentials@v1
-      with:
-        role-to-assume: ${{ secrets.TERERAFORM_PARIAH_NEXUS_ROLE_ARN }}
-        aws-region: ${{ secrets.AWS_DEFAULT_REGION }} 
+      - name: Push DB Docker image to DockerHub
+        run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/pariah-nexus-db:latest
 
-    - name: Force new deployment on ECS for API
-      run: |
-        aws ecs update-service \
-          --cluster ${{ secrets.ECS_CLUSTER_ARN }} \
-          --service ${{ env.SERVICE_NAME }} \
-          --force-new-deployment
+      - name: Force new deployment on ECS for API
+        run: |
+          aws ecs update-service \
+            --cluster ${{ secrets.ECS_CLUSTER_ARN }} \
+            --service ${{ env.SERVICE_NAME }} \
+            --force-new-deployment
