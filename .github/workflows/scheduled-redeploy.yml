@@ -12,6 +12,9 @@ env:
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
+    permissions:
+      id-token: write  # Required to exchange the GitHub token for AWS credentials
+      contents: read   # Standard permission to read the repository
 
     steps:
       - name: Checkout repository
@@ -42,6 +45,12 @@ jobs:
 
       - name: Push DB Docker image to DockerHub
         run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/pariah-nexus-db:latest
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          role-to-assume: ${{ secrets.TERRAFORM_PARIAH_NEXUS_ROLE_ARN }}
+          aws-region: ${{ secrets.AWS_DEFAULT_REGION }}
 
       - name: Force new deployment on ECS for API
         run: |
