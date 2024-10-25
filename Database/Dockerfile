@@ -3,7 +3,7 @@ FROM mysql:latest
 WORKDIR /docker-entrypoint-initdb.d
 
 # Copy the downloaded files into the image
-COPY ./initialize_database.sql ./initialize_database.sql
+COPY initialize_database.sql ./initialize_database.sql
 
 # Install netcat for port checking
 RUN microdnf install -y nc
