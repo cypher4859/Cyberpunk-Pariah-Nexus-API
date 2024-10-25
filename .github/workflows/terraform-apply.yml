@@ -116,6 +116,10 @@ jobs:
         with:
           terraform_version: 1.5.1 # Adjust this to your Terraform version
 
+      - name: Terraform Init
+        working-directory: ./terraform
+        run: terraform init
+
       # Step 3: Download the plan artifact
       - name: Download Plan Artifact
         uses: actions/download-artifact@v3
