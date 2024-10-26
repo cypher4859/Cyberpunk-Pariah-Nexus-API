@@ -106,6 +106,7 @@ namespace CyberpunkPariahNexusApi.Controllers
                 devices = clusterDto.devices?.Select(d => new ArasakaDevice
                 {
                     name = d.name,
+                    publicKey = d.publicKey,
                     architecture = d.architecture,
                     processorType = d.processorType,
                     region = d.region,
