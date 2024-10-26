@@ -18,6 +18,7 @@ namespace CyberpunkPariahNexusApi.Models
         public DbSet<ArasakaDeviceMemoryMapping> arasakaDevicesMemoryMappings {get;set;} = null!;
         public DbSet<ArasakaDeviceProcess> arasakaDeviceProcesses {get;set;} = null!;
         public DbSet<ArasakaAthenaDataEvent> arasakaDataEvents {get;set;} = null!;
+        public DbSet<NetRunnerAdministration> netRunnerAdministrations {get;set;} = null!;
         
         protected override void OnModelCreating(ModelBuilder modelBuilder) {
             modelBuilder.Entity<ArasakaCluster>()

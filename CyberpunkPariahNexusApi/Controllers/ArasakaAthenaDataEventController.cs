@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using CyberpunkPariahNexusApi.Models;
 using CyberpunkPariahNexusApi.Models.Arasaka;
+using CyberpunkPariahNexusApi.Helpers;
 
 namespace CyberpunkPariahNexusApi.Controllers
 {
@@ -23,15 +24,21 @@ namespace CyberpunkPariahNexusApi.Controllers
 
         // GET: api/ArasakaAthenaDataEvent
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<ArasakaAthenaDataEvent>>> GetarasakaDataEvents()
+        public async Task<ActionResult<IEnumerable<ArasakaAthenaDataEvent>>> GetArasakaDataEvents(string athenaKey)
         {
+            if (!AuthorizationService.HandleAdminAuthorization(athenaKey) && !AuthorizationService.HandleAthenaAuthorization(athenaKey)) {
+                return Unauthorized();
+            }
             return await _context.arasakaDataEvents.ToListAsync();
         }
 
         // GET: api/ArasakaAthenaDataEvent/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<ArasakaAthenaDataEvent>> GetArasakaAthenaDataEvent(int id)
+        public async Task<ActionResult<ArasakaAthenaDataEvent>> GetArasakaAthenaDataEvent(int id, string athenaKey)
         {
+            if (!AuthorizationService.HandleAdminAuthorization(athenaKey) && !AuthorizationService.HandleAthenaAuthorization(athenaKey)) {
+                return Unauthorized();
+            }
             var arasakaAthenaDataEvent = await _context.arasakaDataEvents.FindAsync(id);
 
             if (arasakaAthenaDataEvent == null)
@@ -45,8 +52,11 @@ namespace CyberpunkPariahNexusApi.Controllers
         // PUT: api/ArasakaAthenaDataEvent/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutArasakaAthenaDataEvent(int id, ArasakaAthenaDataEvent arasakaAthenaDataEvent)
+        public async Task<IActionResult> PutArasakaAthenaDataEvent(int id, ArasakaAthenaDataEvent arasakaAthenaDataEvent, string athenaKey)
         {
+            if (!AuthorizationService.HandleAdminAuthorization(athenaKey) && !AuthorizationService.HandleAthenaAuthorization(athenaKey)) {
+                return Unauthorized();
+            }
             if (id != arasakaAthenaDataEvent.id)
             {
                 return BadRequest();
@@ -76,8 +86,11 @@ namespace CyberpunkPariahNexusApi.Controllers
         // POST: api/ArasakaAthenaDataEvent
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<ArasakaAthenaDataEvent>> PostArasakaAthenaDataEvent(ArasakaAthenaDataEvent arasakaAthenaDataEvent)
+        public async Task<ActionResult<ArasakaAthenaDataEvent>> PostArasakaAthenaDataEvent(ArasakaAthenaDataEvent arasakaAthenaDataEvent, string athenaKey)
         {
+            if (!AuthorizationService.HandleAdminAuthorization(athenaKey) && !AuthorizationService.HandleAthenaAuthorization(athenaKey)) {
+                return Unauthorized();
+            }
             _context.arasakaDataEvents.Add(arasakaAthenaDataEvent);
             await _context.SaveChangesAsync();
 
@@ -86,8 +99,11 @@ namespace CyberpunkPariahNexusApi.Controllers
 
         // DELETE: api/ArasakaAthenaDataEvent/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteArasakaAthenaDataEvent(int id)
+        public async Task<IActionResult> DeleteArasakaAthenaDataEvent(int id, string athenaKey)
         {
+            if (!AuthorizationService.HandleAdminAuthorization(athenaKey) && !AuthorizationService.HandleAthenaAuthorization(athenaKey)) {
+                return Unauthorized();
+            }
             var arasakaAthenaDataEvent = await _context.arasakaDataEvents.FindAsync(id);
             if (arasakaAthenaDataEvent == null)
             {

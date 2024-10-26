@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using CyberpunkPariahNexusApi.Models;
 using CyberpunkPariahNexusApi.Models.Arasaka;
+using CyberpunkPariahNexusApi.Helpers;
 
 namespace CyberpunkPariahNexusApi.Controllers
 {
@@ -45,8 +46,11 @@ namespace CyberpunkPariahNexusApi.Controllers
         // PUT: api/ArasakaDeviceMemoryMapping/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutArasakaDeviceMemoryMapping(int id, ArasakaDeviceMemoryMapping arasakaDeviceMemoryMapping)
+        public async Task<IActionResult> PutArasakaDeviceMemoryMapping(int id, ArasakaDeviceMemoryMapping arasakaDeviceMemoryMapping, string adminKey)
         {
+            if (!AuthorizationService.HandleAdminAuthorization(adminKey)) {
+                return Unauthorized();
+            }
             if (id != arasakaDeviceMemoryMapping.id)
             {
                 return BadRequest();
@@ -76,8 +80,11 @@ namespace CyberpunkPariahNexusApi.Controllers
         // POST: api/ArasakaDeviceMemoryMapping
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<ArasakaDeviceMemoryMapping>> PostArasakaDeviceMemoryMapping(ArasakaDeviceMemoryMapping arasakaDeviceMemoryMapping)
+        public async Task<ActionResult<ArasakaDeviceMemoryMapping>> PostArasakaDeviceMemoryMapping(ArasakaDeviceMemoryMapping arasakaDeviceMemoryMapping, string adminKey)
         {
+            if (!AuthorizationService.HandleAdminAuthorization(adminKey)) {
+                return Unauthorized();
+            }
             _context.arasakaDevicesMemoryMappings.Add(arasakaDeviceMemoryMapping);
             await _context.SaveChangesAsync();
 
@@ -86,8 +93,11 @@ namespace CyberpunkPariahNexusApi.Controllers
 
         // DELETE: api/ArasakaDeviceMemoryMapping/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteArasakaDeviceMemoryMapping(int id)
+        public async Task<IActionResult> DeleteArasakaDeviceMemoryMapping(int id, string adminKey)
         {
+            if (!AuthorizationService.HandleAdminAuthorization(adminKey)) {
+                return Unauthorized();
+            }
             var arasakaDeviceMemoryMapping = await _context.arasakaDevicesMemoryMappings.FindAsync(id);
             if (arasakaDeviceMemoryMapping == null)
             {

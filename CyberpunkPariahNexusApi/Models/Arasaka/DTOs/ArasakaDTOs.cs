@@ -83,4 +83,9 @@ namespace CyberpunkPariahNexusApi.Models.Arasaka.DTOs
         public bool success { get; set; }
         public int deviceId { get; set; }  // Foreign key, no device navigation property in DTO
     }
+
+    public class NetRunnerAdministrationDto
+    {
+        public string fullName { get; set; }
+    }
 }

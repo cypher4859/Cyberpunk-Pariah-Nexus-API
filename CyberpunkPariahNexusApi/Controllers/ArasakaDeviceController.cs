@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using CyberpunkPariahNexusApi.Models;
 using CyberpunkPariahNexusApi.Models.Arasaka;
+using CyberpunkPariahNexusApi.Helpers;
 
 namespace CyberpunkPariahNexusApi.Controllers
 {
@@ -49,8 +50,11 @@ namespace CyberpunkPariahNexusApi.Controllers
         // PUT: api/ArasakaDevice/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutArasakaDevice(int id, ArasakaDevice arasakaDevice)
+        public async Task<IActionResult> PutArasakaDevice(int id, ArasakaDevice arasakaDevice, string adminKey)
         {
+            if (!AuthorizationService.HandleAdminAuthorization(adminKey)) {
+                return Unauthorized();
+            }
             if (id != arasakaDevice.id)
             {
                 return BadRequest();
@@ -80,8 +84,11 @@ namespace CyberpunkPariahNexusApi.Controllers
         // POST: api/ArasakaDevice
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<ArasakaDevice>> PostArasakaDevice(ArasakaDevice arasakaDevice)
+        public async Task<ActionResult<ArasakaDevice>> PostArasakaDevice(ArasakaDevice arasakaDevice, string adminKey)
         {
+            if (!AuthorizationService.HandleAdminAuthorization(adminKey)) {
+                return Unauthorized();
+            }
             _context.arasakaDevices.Add(arasakaDevice);
             await _context.SaveChangesAsync();
 
@@ -90,8 +97,11 @@ namespace CyberpunkPariahNexusApi.Controllers
 
         // DELETE: api/ArasakaDevice/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteArasakaDevice(int id)
+        public async Task<IActionResult> DeleteArasakaDevice(int id, string adminKey)
         {
+            if (!AuthorizationService.HandleAdminAuthorization(adminKey)) {
+                return Unauthorized();
+            }
             var arasakaDevice = await _context.arasakaDevices.FindAsync(id);
             if (arasakaDevice == null)
             {

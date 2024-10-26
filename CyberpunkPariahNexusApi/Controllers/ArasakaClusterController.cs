@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using CyberpunkPariahNexusApi.Models;
 using CyberpunkPariahNexusApi.Models.Arasaka;
 using CyberpunkPariahNexusApi.Models.Arasaka.DTOs;
+using CyberpunkPariahNexusApi.Helpers;
 
 namespace CyberpunkPariahNexusApi.Controllers
 {
@@ -25,7 +26,7 @@ namespace CyberpunkPariahNexusApi.Controllers
         // GET: api/ArasakaCluster
         // This is lazy-loaded since there could be a bunch 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<ArasakaCluster>>> GetarasakaClusters()
+        public async Task<ActionResult<IEnumerable<ArasakaCluster>>> GetArasakaClusters()
         {
             return await _context.arasakaClusters.ToListAsync();
         }
@@ -54,8 +55,13 @@ namespace CyberpunkPariahNexusApi.Controllers
         // PUT: api/ArasakaCluster/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutArasakaCluster(int id, ArasakaCluster arasakaCluster)
+        [ApiExplorerSettings(IgnoreApi = true)]
+        public async Task<IActionResult> PutArasakaCluster(int id, string adminKey, ArasakaCluster arasakaCluster)
         {
+            if (!AuthorizationService.HandleAdminAuthorization(adminKey)) {
+                return Unauthorized();
+            }
+
             if (id != arasakaCluster.id)
             {
                 return BadRequest();
@@ -85,8 +91,11 @@ namespace CyberpunkPariahNexusApi.Controllers
         // POST: api/ArasakaCluster
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<ArasakaCluster>> PostArasakaCluster(ArasakaClusterDto clusterDto)
+        public async Task<ActionResult<ArasakaCluster>> PostArasakaCluster(ArasakaClusterDto clusterDto, string adminKey)
         {
+            if (!AuthorizationService.HandleAdminAuthorization(adminKey)) {
+                return Unauthorized();
+            }
             if (clusterDto == null) {
                 return BadRequest("Cluster data is missing");
             }
@@ -178,8 +187,13 @@ namespace CyberpunkPariahNexusApi.Controllers
 
         // DELETE: api/ArasakaCluster/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteArasakaCluster(int id)
+        [ApiExplorerSettings(IgnoreApi = true)]
+        public async Task<IActionResult> DeleteArasakaCluster(int id, string adminKey)
         {
+            if (!AuthorizationService.HandleAdminAuthorization(adminKey)) {
+                return Unauthorized();
+            }
+
             var arasakaCluster = await _context.arasakaClusters.FindAsync(id);
             if (arasakaCluster == null)
             {

@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using CyberpunkPariahNexusApi.Models;
 using CyberpunkPariahNexusApi.Models.Arasaka;
+using CyberpunkPariahNexusApi.Helpers;
 
 namespace CyberpunkPariahNexusApi.Controllers
 {
@@ -45,8 +46,11 @@ namespace CyberpunkPariahNexusApi.Controllers
         // PUT: api/ArasakaDeviceProcess/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutArasakaDeviceProcess(int id, ArasakaDeviceProcess arasakaDeviceProcess)
+        public async Task<IActionResult> PutArasakaDeviceProcess(int id, ArasakaDeviceProcess arasakaDeviceProcess, string adminKey)
         {
+            if (!AuthorizationService.HandleAdminAuthorization(adminKey)) {
+                return Unauthorized();
+            }
             if (id != arasakaDeviceProcess.id)
             {
                 return BadRequest();
@@ -76,8 +80,11 @@ namespace CyberpunkPariahNexusApi.Controllers
         // POST: api/ArasakaDeviceProcess
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<ArasakaDeviceProcess>> PostArasakaDeviceProcess(ArasakaDeviceProcess arasakaDeviceProcess)
+        public async Task<ActionResult<ArasakaDeviceProcess>> PostArasakaDeviceProcess(ArasakaDeviceProcess arasakaDeviceProcess, string adminKey)
         {
+            if (!AuthorizationService.HandleAdminAuthorization(adminKey)) {
+                return Unauthorized();
+            }
             _context.arasakaDeviceProcesses.Add(arasakaDeviceProcess);
             await _context.SaveChangesAsync();
 
@@ -86,8 +93,11 @@ namespace CyberpunkPariahNexusApi.Controllers
 
         // DELETE: api/ArasakaDeviceProcess/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteArasakaDeviceProcess(int id)
+        public async Task<IActionResult> DeleteArasakaDeviceProcess(int id, string adminKey)
         {
+            if (!AuthorizationService.HandleAdminAuthorization(adminKey)) {
+                return Unauthorized();
+            }
             var arasakaDeviceProcess = await _context.arasakaDeviceProcesses.FindAsync(id);
             if (arasakaDeviceProcess == null)
             {
