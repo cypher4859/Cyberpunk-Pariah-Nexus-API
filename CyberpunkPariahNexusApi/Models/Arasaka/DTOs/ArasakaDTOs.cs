@@ -53,8 +53,8 @@ namespace CyberpunkPariahNexusApi.Models.Arasaka.DTOs
         public int memoryLatency { get; set; }
         public float memoryVoltage { get; set; }
         public string memoryFormFactor { get; set; }
-        public int memoryEccSupport { get; set; }
-        public int memoryHeatSpreader { get; set; }
+        public bool memoryEccSupport { get; set; }
+        public bool memoryHeatSpreader { get; set; }
         public int memoryWarrantyYears { get; set; }
         public int deviceId { get; set; }  // Foreign key, no device navigation property in DTO
     }
@@ -78,7 +78,7 @@ namespace CyberpunkPariahNexusApi.Models.Arasaka.DTOs
         public string appVersion { get; set; }
         public int errorCode { get; set; }
         public string errorMessage { get; set; }
-        public int responseTime { get; set; }
+        public float responseTime { get; set; }
         public bool success { get; set; }
         public int deviceId { get; set; }  // Foreign key, no device navigation property in DTO
     }

@@ -16,8 +16,8 @@ namespace CyberpunkPariahNexusApi.Models.Arasaka
         public int memoryLatency {get;set;}
         public float memoryVoltage {get;set;}
         public string memoryFormFactor {get;set;}
-        public int memoryEccSupport {get;set;}
-        public int memoryHeatSpreader {get;set;}
+        public bool memoryEccSupport {get;set;}
+        public bool memoryHeatSpreader {get;set;}
         public int memoryWarrantyYears {get;set;}
         public int deviceId {get;set;}
         [JsonIgnore]

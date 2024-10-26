@@ -25,7 +25,7 @@ namespace CyberpunkPariahNexusApi.Models.Arasaka
         public string appVersion {get;set;}
         public int errorCode {get;set;}
         public string errorMessage {get;set;}
-        public int responseTime {get;set;}
+        public float responseTime {get;set;}
         public bool success {get;set;}
         public int deviceId {get;set;}
         [JsonIgnore]
