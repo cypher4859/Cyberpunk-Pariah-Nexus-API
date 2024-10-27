@@ -108,6 +108,8 @@ jobs:
               echo "terraform_changed=false" >> $GITHUB_ENV
             fi
           fi
+        outputs:
+          terraform_changed: ${{ steps.check.outputs.terraform_changed }}:
 
   terraform-plan:
     name: Terraform Plan
