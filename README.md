@@ -73,4 +73,3 @@ You can reference this project to investigate techniques such as:
 - Terraform
 - AWS Deployment
 - Robust build+test+deploy with automatic scaling+nightly-resets
-- *Autism
