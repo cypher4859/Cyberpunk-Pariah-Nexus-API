@@ -87,6 +87,8 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
+        with:
+          fetch-depth: 3  # Fetch the last three commits
 
       - name: Check for changes in Terraform files
         id: check
