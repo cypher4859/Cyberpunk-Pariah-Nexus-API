@@ -82,6 +82,7 @@ jobs:
   check-terraform-changes:
     name: Check for Terraform Changes
     runs-on: ubuntu-latest
+    id: check
     outputs:
       terraform_changed: ${{ steps.check.outputs.terraform_changed }}
     steps:
@@ -96,20 +97,22 @@ jobs:
           if [ "${{ github.event_name }}" == "workflow_dispatch" ]; then
             echo "Workflow manually triggered. Assuming changes in Terraform files."
             echo "terraform_changed=true" >> $GITHUB_ENV
+            echo "::set-output name=terraform_changed::true"
           elif [ -z "${{ github.event.before }}" ]; then
             echo "No previous commit found. Assuming changes in Terraform files."
             echo "terraform_changed=true" >> $GITHUB_ENV
+            echo "::set-output name=terraform_changed::true"
           else
             if git diff --name-only ${{ github.event.before }} ${{ github.sha }} | grep -E 'terraform/.*'; then
               echo "Terraform files appear to have changed"
               echo "terraform_changed=true" >> $GITHUB_ENV
+              echo "::set-output name=terraform_changed::true"
             else
               echo "There apepar to be no changes to the Terraform files"
               echo "terraform_changed=false" >> $GITHUB_ENV
+              echo "::set-output name=terraform_changed::false"
             fi
           fi
-        outputs:
-          terraform_changed: ${{ steps.check.outputs.terraform_changed }}:
 
   terraform-plan:
     name: Terraform Plan
