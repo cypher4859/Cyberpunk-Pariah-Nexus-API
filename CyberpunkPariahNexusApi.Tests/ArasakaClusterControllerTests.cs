@@ -42,7 +42,7 @@ public class ArasakaClusterControllerTests : IClassFixture<WebApplicationFactory
 
                 services.AddDbContext<DataContext>(options =>
                 {
-                    var connectionString = "Server=localhost;Database=pariahnexus;User=arasakaOperator;Password=arasakaOperator123;";
+                    var connectionString = "Server=pariah-nexus-db;Database=pariahnexus;User=arasakaOperator;Password=arasakaOperator123;";
                     options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
                 });
             });

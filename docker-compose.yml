@@ -4,7 +4,7 @@ services:
   pariah-nexus-app:
     build:
       context: .
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.Test
     container_name: app
     ports:
       - 8080:8080
@@ -12,7 +12,6 @@ services:
       pariah-nexus-db:
         condition: service_healthy
         restart: true
-    command: ["dotnet", "test", "CyberpunkPariahNexusAPI.Tests/CyberpunkPariahNexusAPI.Tests.csproj", "--logger:trx"]
 
   pariah-nexus-db:
     build:

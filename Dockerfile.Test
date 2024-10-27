@@ -1,0 +1,12 @@
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+WORKDIR /source
+
+EXPOSE 8080
+
+# copy csproj and restore as distinct layers
+COPY CyberpunkPariahNexusApi/ CyberpunkPariahNexusApi/
+COPY CyberpunkPariahNexusApi.Tests/ CyberpunkPariahNexusApi.Tests/
+RUN dotnet restore CyberpunkPariahNexusApi/CyberpunkPariahNexusApi.csproj
+RUN dotnet restore CyberpunkPariahNexusApi.Tests/CyberpunkPariahNexusApi.Tests.csproj
+
+CMD dotnet test CyberpunkPariahNexusApi.Tests/CyberpunkPariahNexusApi.Tests.csproj --no-restore
