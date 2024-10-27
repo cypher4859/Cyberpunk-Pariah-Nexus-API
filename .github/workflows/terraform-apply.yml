@@ -10,13 +10,43 @@ on:
   workflow_dispatch:  # Enables manual trigger from the UI
 
 jobs:
+  run-tests:
+    name: (E2E) Run Dotnet Tests
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          role-to-assume: ${{ secrets.S3_PARIAH_NEXUS_ROLE_ARN }}
+          aws-region: ${{ secrets.AWS_DEFAULT_REGION }}
+
+      - name: Log in to DockerHub
+        run: echo "${{ secrets.DOCKERHUB_PASSWORD }}" | docker login -u "${{ secrets.DOCKERHUB_USERNAME }}" --password-stdin
+
+      - name: Download SQL and config from S3
+        run: |
+          aws s3 cp s3://${{ secrets.TARGET_S3_BUCKET_NAME }}/projects/cyberpunk/pariah-nexus-api/initialization_data/initialize_database.sql ./initialize_database.sql
+
+      - name: Start Docker Compose (run tests)
+        run: |
+          docker compose -f "docker-compose.yml" up --build --abort-on-container-exit
+      
+      - name: Tear down Docker Compose
+        if: always()
+        run: docker compose -f "docker-compose.yml" down
+
   build-deploy:
     name: Build and Deploy Code
     runs-on: ubuntu-latest
     permissions:
       id-token: write  # Required to exchange the GitHub token for AWS credentials
       contents: read   # Standard permission to read the repository
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
