@@ -55,6 +55,10 @@ These workflows automate the CI/CD process, ensuring the application is thorough
 - The **pariah-nexus-api** is built using the **Dockerfile.Test**, which not only runs the application but also **executes tests** as part of the CI/CD process.
 - The **`pariah-nexus-db`** service is set up with a health check to ensure the database is fully operational before dependent services start, providing **reliable and synchronized startup** of services.
 
+If you want to make changes to the database initialization (`initialize_database.sql`), remember that it must be added to the **S3 bucket** for those changes to be included in the deployment process, i.e. contact me unless this is living in Code:You space at the time.
+
+If you want to run the tests from a local instance of **CyberpunkPariahNexusApi** against the database, you will need to set the test's connection string to `localhost` instead of the Docker Compose service name to properly connect to your local environment.
+
 This configuration allows for **seamless local development**, **testing**, and **deployment** of the `pariah-nexus-api` application, enabling both developers and CI/CD pipelines to work effectively with the containerized environment.
 
 ## Ways to use this repo
