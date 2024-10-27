@@ -79,15 +79,32 @@ jobs:
       - name: Push DB Docker image to DockerHub
         run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/pariah-nexus-db:latest
 
+  check-terraform-changes:
+    name: Check for Terraform Changes
+    runs-on: ubuntu-latest
+    outputs:
+      terraform_changed: ${{ steps.check.outputs.terraform_changed }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Check for changes in Terraform files
+        id: check
+        run: |
+          if git diff --name-only ${{ github.event.before }} ${{ github.sha }} | grep -E 'terraform/.*'; then
+            echo "terraform_changed=true" >> $GITHUB_ENV
+          else
+            echo "terraform_changed=false" >> $GITHUB_ENV
+          fi
+
   terraform-plan:
     name: Terraform Plan
     runs-on: ubuntu-latest
     permissions:
       id-token: write  # Required to exchange the GitHub token for AWS credentials
       contents: read   # Standard permission to read the repository
-    needs: build-deploy
-    if: success()
-
+    needs: [build-deploy, check-terraform-changes]
+    if: needs.check-terraform-changes.outputs.terraform_changed == 'true'
     steps:
       # Step 1: Checkout the repository
       - name: Checkout repository
@@ -128,7 +145,7 @@ jobs:
     permissions:
       id-token: write  # Required to exchange the GitHub token for AWS credentials
       contents: read   # Standard permission to read the repository
-    needs: terraform-plan  # Only run this job if 'terraform-plan' completes successfully
+    needs: [terraform-plan, check-terraform-changes]  # Only run this job if 'terraform-plan' completes successfully
     if: success()
 
     steps:
