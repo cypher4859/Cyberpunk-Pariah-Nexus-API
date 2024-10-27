@@ -55,6 +55,7 @@ namespace CyberpunkPariahNexusApi.Controllers
         // PUT: api/ArasakaCluster/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
+        [ApiExplorerSettings(IgnoreApi = true)]
         public async Task<IActionResult> PutArasakaCluster(int id, string adminKey, ArasakaCluster arasakaCluster)
         {
             if (!AuthorizationService.HandleAdminAuthorization(adminKey)) {

@@ -12,6 +12,7 @@ services:
       pariah-nexus-db:
         condition: service_healthy
         restart: true
+    command: ["dotnet", "test", "CyberpunkPariahNexusAPI.Tests/CyberpunkPariahNexusAPI.Tests.csproj", "--logger:trx"]
 
   pariah-nexus-db:
     build:
