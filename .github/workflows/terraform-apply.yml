@@ -91,10 +91,15 @@ jobs:
       - name: Check for changes in Terraform files
         id: check
         run: |
-          if git diff --name-only ${{ github.event.before }} ${{ github.sha }} | grep -E 'terraform/.*'; then
+          if [ -z "${{ github.event.before }}" ]; then
+            echo "No previous commit found. Assuming changes in Terraform files."
             echo "terraform_changed=true" >> $GITHUB_ENV
           else
-            echo "terraform_changed=false" >> $GITHUB_ENV
+            if git diff --name-only ${{ github.event.before }} ${{ github.sha }} | grep -E 'terraform/.*'; then
+              echo "terraform_changed=true" >> $GITHUB_ENV
+            else
+              echo "terraform_changed=false" >> $GITHUB_ENV
+            fi
           fi
 
   terraform-plan:
