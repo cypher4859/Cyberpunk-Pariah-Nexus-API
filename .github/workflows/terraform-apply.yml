@@ -90,10 +90,13 @@ jobs:
         with:
           fetch-depth: 3  # Fetch the last three commits
 
-      - name: Check for changes in Terraform files
+      - name: Determine if Terraform files have changed
         id: check
         run: |
-          if [ -z "${{ github.event.before }}" ]; then
+          if [ "${{ github.event_name }}" == "workflow_dispatch" ]; then
+            echo "Workflow manually triggered. Assuming changes in Terraform files."
+            echo "terraform_changed=true" >> $GITHUB_ENV
+          elif [ -z "${{ github.event.before }}" ]; then
             echo "No previous commit found. Assuming changes in Terraform files."
             echo "terraform_changed=true" >> $GITHUB_ENV
           else
