@@ -1,6 +1,9 @@
 # Cyberpunk - Pariah Nexus API
 
 ## Architecture
+
+![Architecture Diagram](./Docs/Assets/Cyberpunk%20-%20Pariah%20Nexus%20API.png)
+
 ### Arasaka Data Models
 - Cluster
 - Device
