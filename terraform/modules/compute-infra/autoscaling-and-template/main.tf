@@ -71,7 +71,7 @@ resource "aws_cloudwatch_metric_alarm" "high_cpu" {
   evaluation_periods  = "2"
   metric_name         = "CPUUtilization"
   namespace           = "AWS/EC2"
-  period              = "120"
+  period              = "60"
   statistic           = "Average"
   threshold           = "75"
   alarm_description   = "This metric monitors EC2 CPU utilization and triggers scale up."
@@ -91,6 +91,38 @@ resource "aws_cloudwatch_metric_alarm" "low_cpu" {
   statistic           = "Average"
   threshold           = "25"
   alarm_description   = "This metric monitors EC2 CPU utilization and triggers scale down."
+  dimensions = {
+    AutoScalingGroupName = aws_autoscaling_group.ecs_asg.name
+  }
+  alarm_actions = [aws_autoscaling_policy.scale_down.arn]
+}
+
+resource "aws_cloudwatch_metric_alarm" "high_memory" {
+  alarm_name          = "ecs-asg-high-memory"
+  comparison_operator = "GreaterThanOrEqualToThreshold"
+  evaluation_periods  = "2"
+  metric_name         = "MemoryUtilization"
+  namespace           = "AWS/ECS"
+  period              = "60"
+  statistic           = "Average"
+  threshold           = "75"
+  alarm_description   = "This metric monitors ECS memory utilization and triggers scale up."
+  dimensions = {
+    AutoScalingGroupName = aws_autoscaling_group.ecs_asg.name
+  }
+  alarm_actions = [aws_autoscaling_policy.scale_up.arn]
+}
+
+resource "aws_cloudwatch_metric_alarm" "low_memory" {
+  alarm_name          = "ecs-asg-low-memory"
+  comparison_operator = "LessThanOrEqualToThreshold"
+  evaluation_periods  = "2"
+  metric_name         = "MemoryUtilization"
+  namespace           = "AWS/ECS"
+  period              = "120"
+  statistic           = "Average"
+  threshold           = "25"
+  alarm_description   = "This metric monitors ECS memory utilization and triggers scale down."
   dimensions = {
     AutoScalingGroupName = aws_autoscaling_group.ecs_asg.name
   }

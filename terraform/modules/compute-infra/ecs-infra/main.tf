@@ -42,7 +42,7 @@ resource "aws_ecs_task_definition" "pariah_nexus_ecs_task_definition" {
     family             = "pariah-nexus-ecs-task" # TODO: Swap this
     network_mode       = "awsvpc"
     execution_role_arn = "arn:aws:iam::${local.acct_id}:role/ecsTaskExecutionRole"
-    cpu                = 512
+    cpu                = 1536
     runtime_platform {
         operating_system_family = "LINUX"
         cpu_architecture        = "X86_64"
@@ -52,8 +52,8 @@ resource "aws_ecs_task_definition" "pariah_nexus_ecs_task_definition" {
             name      = "pariah-nexus"
             image     = "docker.io/cypher4859/pariah-nexus-api:latest" # TODO: Swap this for the actual
             container_name = "pariah-nexus-app"
-            cpu       = 256
-            memory    = 1024
+            cpu       = 768
+            memory    = 2048
             essential = true
             portMappings = [
                 {
@@ -91,8 +91,8 @@ resource "aws_ecs_task_definition" "pariah_nexus_ecs_task_definition" {
             name      = "pariah-nexus-db"
             image     = "docker.io/cypher4859/pariah-nexus-db:latest" # TODO: Swap this for the actual 
             container_name = "pariah-nexus-db"
-            cpu       = 256
-            memory    = 1024
+            cpu       = 768
+            memory    = 1536
             essential = true
             environment = [
                 {"name": "MYSQL_DATABASE", "value": "pariahnexus"},
