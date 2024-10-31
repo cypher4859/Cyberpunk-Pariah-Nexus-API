@@ -21,8 +21,13 @@ resource "aws_ecs_capacity_provider" "ecs_capacity_provider" {
         auto_scaling_group_arn = var.asg_arn
 
         managed_scaling {
-            status                    = "DISABLED"
+            maximum_scaling_step_size = 2
+            minimum_scaling_step_size = 1
+            status                    = "ENABLED" # Enable managed scaling
+            target_capacity           = 70        # Desired target capacity in percentage
         }
+
+        managed_termination_protection = "ENABLED"
     }
 }
 
