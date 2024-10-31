@@ -1,7 +1,7 @@
 resource "aws_launch_template" "ecs_lt" {
   name_prefix   = "ecs-pariah-nexus-template"
   image_id      = "ami-0fc9e89bb58985752" # Amazon ECS-Optimized Amazon Linux 2 (AL2) x86_64 AMI AMI, pulled from AWS -> EC2 -> AMI Catalog
-  instance_type = "t3.medium"
+  instance_type = "t3.large"
 
   key_name               = var.launch_template_key_name
   vpc_security_group_ids = var.security_groups
